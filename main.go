@@ -1,25 +1,19 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"log"
 
-	"github.com/joho/godotenv"
-	pgdb "github.com/peterjohnbishop/shiny-carnival/db"
+	"github.com/MobilityData/gtfs-realtime-bindings/golang/gtfs"
+	"github.com/peterjohnbishop/shiny-carnival/rtdgtfs"
 )
 
-var db *sql.DB
+var vehiclePositions []*gtfs.VehiclePosition
 
 func main() {
-	err := godotenv.Load()
+	var err error
+	vehiclePositions, err = rtdgtfs.GetVehiclePositions()
 	if err != nil {
-		log.Println("Warning: No .env file found or error loading it")
+		fmt.Println(err)
 	}
-
-	db, err = pgdb.ConnectDB()
-	if err != nil {
-		fmt.Printf("error connecting to the postgres container: %s", err)
-	}
-	_ = db
+	fmt.Println(vehiclePositions)
 }
