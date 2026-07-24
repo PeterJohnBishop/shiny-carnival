@@ -11,13 +11,12 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func GetVehiclePositions() ([]*gtfs.VehiclePosition, error) {
+func GetVehiclePositions(url string) ([]*gtfs.VehiclePosition, error) {
 	var allVehiclePositions []*gtfs.VehiclePosition
-	feedURL := "https://open-data.rtd-denver.com/files/gtfs-rt/rtd/VehiclePosition.pb"
 
 	// fetch raw pb data
 	client := &http.Client{Timeout: 10 * time.Second}
-	resp, err := client.Get(feedURL)
+	resp, err := client.Get(url)
 	if err != nil {
 		return nil, fmt.Errorf("fetching GTFS feed from RTD failed: %w", err)
 	}
